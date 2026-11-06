@@ -300,6 +300,10 @@ If set to *true* and ``ros::Time::isSimTime()`` is *true*, the filter will reset
 ^^^^^^^^^^^^^^^^^^^^^^^^
 If set to *true*, the filter predicts and corrects up to the time of the latest measurement (by default) but will now also predict up to the current time step.
 
+~deterministic_measurement_order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Thornbots fork only. If set to *true*, queued measurements with equal stamps are processed in order of topic name, then arrival, instead of an order set by the heap's shape. Defaults to *false* (upstream behavior).
+
 ~disabled_at_startup
 ^^^^^^^^^^^^^^^^^^^^
 If set to *true* will not run the filter on start.

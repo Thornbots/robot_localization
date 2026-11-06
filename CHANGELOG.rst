@@ -2,6 +2,10 @@
 Changelog for package robot_localization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming (Thornbots fork)
+----------------------------
+* Add ``deterministic_measurement_order`` (default false): equal-stamp measurements pop by topic name and arrival number, not heap shape.
+
 3.8.3 (2025-08-29)
 ------------------
 * Add a Parameters Callback to set magnetic_declination_radians at runtime (`#920 <https://github.com/cra-ros-pkg/robot_localization/issues/920>`_)

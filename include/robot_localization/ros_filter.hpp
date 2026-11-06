@@ -647,6 +647,9 @@ protected:
   //!
   MeasurementQueue measurement_queue_;
 
+  //! @brief Thornbots: next Measurement::sequence_
+  uint64_t measurement_sequence_{0};
+
   //! @brief Contains the state vector variable names in string format
   //!
   std::vector<std::string> state_variable_names_;

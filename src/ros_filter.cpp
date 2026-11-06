@@ -373,6 +373,7 @@ void RosFilter<T>::enqueueMeasurement(
   meas->mahalanobis_thresh_ = mahalanobis_thresh;
   meas->latest_control_ = latest_control_;
   meas->latest_control_time_ = latest_control_time_;
+  meas->sequence_ = measurement_sequence_++;
   measurement_queue_.push(meas);
 }
 
@@ -952,6 +953,11 @@ void RosFilter<T>::loadParams()
   frequency_ = this->declare_parameter("frequency", 30.0);
 
   predict_to_current_time_ = this->declare_parameter<bool>("predict_to_current_time", false);
+
+  // Thornbots: deterministic order for measurements with equal stamps (default: upstream).
+  Measurement tie_order;
+  tie_order.order_ties_ = this->declare_parameter<bool>("deterministic_measurement_order", false);
+  measurement_queue_ = MeasurementQueue(tie_order);
 
   sensor_timeout_ =
     rclcpp::Duration::from_seconds(this->declare_parameter("sensor_timeout", 1.0 / frequency_));
