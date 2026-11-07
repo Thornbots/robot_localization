@@ -34,6 +34,7 @@
 #ifndef ROBOT_LOCALIZATION__MEASUREMENT_HPP_
 #define ROBOT_LOCALIZATION__MEASUREMENT_HPP_
 
+#include <cstdint>
 #include <limits>
 #include <memory>
 #include <string>
@@ -87,6 +88,14 @@ struct Measurement
   Eigen::VectorXd measurement_;
   Eigen::MatrixXd covariance_;
 
+  // Thornbots: arrival number, assigned when queued; breaks ties inside one topic.
+  uint64_t sequence_{0};
+
+  // Thornbots: comparator state, set only on the queue's comparator instance. When true,
+  // equal stamps order by (topic_name_, sequence_) instead of by heap shape, which depends
+  // on the order callbacks pushed them. Default false is upstream behavior.
+  bool order_ties_{false};
+
   // We want earlier times to have greater priority
   bool operator()(
     const std::shared_ptr<Measurement> & a,
@@ -97,7 +106,16 @@ struct Measurement
 
   bool operator()(const Measurement & a, const Measurement & b)
   {
-    return a.time_ > b.time_;
+    if (a.time_ > b.time_) {
+      return true;
+    }
+    if (!order_ties_ || a.time_ < b.time_) {
+      return false;
+    }
+    if (a.topic_name_ != b.topic_name_) {
+      return a.topic_name_ > b.topic_name_;
+    }
+    return a.sequence_ > b.sequence_;
   }
 };
 using MeasurementPtr = std::shared_ptr<Measurement>;

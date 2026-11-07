@@ -179,6 +179,9 @@ if(BUILD_TESTING)
   ament_add_gtest(filter_base-test test/test_filter_base.cpp)
   target_link_libraries(filter_base-test ${library_name})
 
+  ament_add_gtest(test_measurement_order test/test_measurement_order.cpp)
+  target_link_libraries(test_measurement_order ${library_name})
+
   #### DIAGNOSTICS TESTS ####
   ament_add_gtest_executable(test_filter_base_diagnostics_timestamps
                     test/test_filter_base_diagnostics_timestamps.cpp)
@@ -373,6 +376,10 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
   USE_SOURCE_PERMISSIONS
 )
+
+# Thornbots: marker so the simulation can tell the fork from the apt package.
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/thornbots_fork" "deterministic_measurement_order\n")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/thornbots_fork" DESTINATION share/${PROJECT_NAME})
 
 ament_export_include_directories(include)
 ament_export_libraries(${library_name})
