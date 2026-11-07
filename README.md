@@ -32,7 +32,9 @@ amplifies through the simulated robot.
   `/localization/odom`).
 - Use: only the simulation sets it, through `sentry_localization`'s `ekf_deterministic_order`
   launch argument ([README](../sentry_localization/README.md#initial-field-position)).
-  Building this package in the workspace overlay shadows the apt one, as for any overlay.
+  Building this package in the workspace overlay shadows the apt one, as for any overlay. The robot
+  image and robot overlay build only their listed packages, which do not include this one, so a
+  robot keeps the apt 3.8.3.
 - Branches: `nightly` is the integration branch the workspace tracks; `main` is the promoted
   release. Keep the diff to upstream small, and rebase onto a later upstream tag rather than
   merging.
