@@ -375,6 +375,12 @@ void RosFilter<T>::enqueueMeasurement(
   meas->latest_control_time_ = latest_control_time_;
   meas->sequence_ = measurement_sequence_++;
   measurement_queue_.push(meas);
+  if (queued_stamps_pub_) {
+    std_msgs::msg::Header queued;
+    queued.stamp = time;
+    queued.frame_id = topic_name;
+    queued_stamps_pub_->publish(queued);
+  }
 }
 
 template<typename T>
@@ -958,6 +964,13 @@ void RosFilter<T>::loadParams()
   Measurement tie_order;
   tie_order.order_ties_ = this->declare_parameter<bool>("deterministic_measurement_order", false);
   measurement_queue_ = MeasurementQueue(tie_order);
+  if (this->declare_parameter<bool>("publish_queued_stamps", false)) {
+    queued_stamps_pub_ = this->create_publisher<std_msgs::msg::Header>(
+      "~/queued_stamps", rclcpp::QoS(1000).reliable());
+  }
+  if (tie_order.order_ties_) {
+    RCLCPP_INFO(this->get_logger(), "deterministic_measurement_order: equal stamps pop by topic");
+  }
 
   sensor_timeout_ =
     rclcpp::Duration::from_seconds(this->declare_parameter("sensor_timeout", 1.0 / frequency_));

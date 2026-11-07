@@ -21,9 +21,15 @@ amplifies through the simulated robot.
 - Patch: parameter `deterministic_measurement_order` (default `false`). When `true`, equal
   stamps pop by (topic name, arrival number) instead of by heap shape. Default `false` runs
   upstream's comparator unchanged, so a robot that picks this package up behaves as stock.
-  The diff is `measurement.hpp` (comparator and an arrival number), one assignment in
-  `RosFilter::enqueueMeasurement`, the parameter read in `RosFilter::loadParams`, and
+  The diff is `measurement.hpp` (comparator and an arrival number), the assignments in
+  `RosFilter::enqueueMeasurement` and `RosFilter::loadParams`, the install of a marker file
+  `share/robot_localization/thornbots_fork` (the simulation refuses to start without it), and
   `test/test_measurement_order.cpp`.
+- Patch, second option: `publish_queued_stamps` (default `false`) publishes a `std_msgs/Header` on
+  `~/queued_stamps` (stamp of the measurement, `frame_id` its topic) each time a measurement is queued, so
+  a lockstep simulation can hold its clock until the EKF has a measurement before its tick fires. A
+  tie-break alone left tick membership to message timing (measured: identical inputs, different
+  `/localization/odom`).
 - Use: only the simulation sets it, through `sentry_localization`'s `ekf_deterministic_order`
   launch argument ([README](../sentry_localization/README.md#initial-field-position)).
   Building this package in the workspace overlay shadows the apt one, as for any overlay.

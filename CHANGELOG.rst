@@ -5,6 +5,7 @@ Changelog for package robot_localization
 Forthcoming (Thornbots fork)
 ----------------------------
 * Add ``deterministic_measurement_order`` (default false): equal-stamp measurements pop by topic name and arrival number, not heap shape.
+* Add ``publish_queued_stamps`` (default false): publish ``~/queued_stamps`` for every queued measurement.
 
 3.8.3 (2025-08-29)
 ------------------

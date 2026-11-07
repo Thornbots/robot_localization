@@ -42,6 +42,7 @@
 
 #include "diagnostic_msgs/msg/diagnostic_status.hpp"
 #include "diagnostic_updater/diagnostic_updater.hpp"
+#include "std_msgs/msg/header.hpp"
 #include "diagnostic_updater/publisher.hpp"
 #include "Eigen/Dense"
 #include "geometry_msgs/msg/accel_with_covariance_stamped.hpp"
@@ -649,6 +650,9 @@ protected:
 
   //! @brief Thornbots: next Measurement::sequence_
   uint64_t measurement_sequence_{0};
+
+  //! @brief Thornbots: stamp of every measurement queued, when publish_queued_stamps is set
+  rclcpp::Publisher<std_msgs::msg::Header>::SharedPtr queued_stamps_pub_;
 
   //! @brief Contains the state vector variable names in string format
   //!

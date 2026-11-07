@@ -304,6 +304,10 @@ If set to *true*, the filter predicts and corrects up to the time of the latest 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Thornbots fork only. If set to *true*, queued measurements with equal stamps are processed in order of topic name, then arrival, instead of an order set by the heap's shape. Defaults to *false* (upstream behavior).
 
+~publish_queued_stamps
+^^^^^^^^^^^^^^^^^^^^^^
+Thornbots fork only. If set to *true*, a ``std_msgs/Header`` is published on ``~queued_stamps`` each time a measurement is queued (``stamp`` the measurement's, ``frame_id`` its topic). Defaults to *false*.
+
 ~disabled_at_startup
 ^^^^^^^^^^^^^^^^^^^^
 If set to *true* will not run the filter on start.
